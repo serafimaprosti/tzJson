@@ -1,0 +1,1 @@
+java -cp "bin/src/main/java:lib/*" tz
