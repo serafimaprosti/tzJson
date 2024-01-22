@@ -39,10 +39,10 @@ public class tz{
 
         for (Ticket ticket : tickets.getTickets()){
 
-            if ((!(ticket.getDestination().equals(tz.TLV))
-                    && !(ticket.getDestination().equals(tz.VVO)))
-                    || (!(ticket.getOrigin().equals(tz.TLV))
-                    && !(ticket.getOrigin().equals(tz.VVO)))){
+            if (!(ticket.getDestination().equals(tz.TLV)
+                    && ticket.getOrigin().equals(tz.VVO))
+                    || !(ticket.getOrigin().equals(tz.TLV))
+                    && ticket.getDestination().equals(tz.VVO)){
                 continue;
             }
 
@@ -74,17 +74,23 @@ public class tz{
     public static double differenceBetweenAveragePriceAndMedian(Tickets tickets){
 
         List<Integer> priceList = tickets.getTickets()
-                .stream().map(Ticket::getPrice)
+                .stream()
+                .filter(ticket -> ((ticket.getDestination().equals(tz.TLV)
+                        && ticket.getOrigin().equals(tz.VVO))
+                        || (ticket.getOrigin().equals(tz.TLV))
+                        && ticket.getDestination().equals(tz.VVO)))
+                .map(Ticket::getPrice)
                 .sorted(Integer::compareTo)
                 .collect(Collectors.toList());
 
         int counter = priceList.size() / 2;
 
         double average = (double) priceList.stream()
-                .reduce(0, Integer::sum) / priceList.size();
+                .reduce(0, Integer::sum);
+        average /= priceList.size();
 
-        double median = (double) (priceList.get(counter) + priceList.get(counter + 1)) / 2;
-
+        double median = (priceList.get(counter - 1) + priceList.get(counter));
+        median /= 2;
 
         return average - median;
     }
