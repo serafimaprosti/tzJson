@@ -15,7 +15,7 @@ public class tz{
     private static final String TLV = "TLV";
     private static final String VVO = "VVO";
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args){
         ObjectMapper objectMapper = new ObjectMapper();
         Tickets tickets = new Tickets();
 
@@ -24,15 +24,12 @@ public class tz{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         Map<String, Duration> result = tz.findMinTimeForEach(tickets);
         System.out.println(result);
         System.out.println("Average Price - Median Price = " + tz.differenceBetweenAveragePriceAndMedian(tickets));
-
     }
 
-    public static Map<String, Duration> findMinTimeForEach(Tickets tickets) throws ParseException {
+    public static Map<String, Duration> findMinTimeForEach(Tickets tickets){
 
         Map<String, Duration> result = new HashMap<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
